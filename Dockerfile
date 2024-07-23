@@ -1,23 +1,22 @@
-# Use an official Ubuntu as a parent image
+# Use Ubuntu as the base image
 FROM ubuntu:latest
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Install Python3 and pip
+# Install Python3 and Python3-pip
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip && \
-    apt-get clean
+    apt-get install -y python3 python3-pip
 
-# Copy the current directory contents into the container at /app
+# Copy the application code into the container
 COPY . /app
 
-# Install any needed packages specified in requirements.txt
-RUN pip3 install --no-cache-dir -r requirements.txt
+# Install the required Python packages
+RUN pip3 install -r requirements.txt
 
-# Make port 8000 available to the world outside this container
+# Expose the port the app runs on
 EXPOSE 8000
 
-# Set the entry point to python3 and the command to run the application
-ENTRYPOINT ["python3"]
-CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+# Set the entry point and command to run the application
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+
