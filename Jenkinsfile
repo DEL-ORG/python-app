@@ -18,8 +18,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image
-                    def buildImage = docker.build("${DOCKER_IMAGE_NAME}")
+                    // Build the Docker image specifying the Dockerfile path
+                    def buildImage = docker.build("${DOCKER_IMAGE_NAME}", "-f smartedu/Dockerfile .")
                 }
             }
         }
@@ -56,4 +56,3 @@ pipeline {
         }
     }
 }
-
