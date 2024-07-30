@@ -37,13 +37,9 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                script {
-                    // Tag the image
-                    def tag = "${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
-                    docker.image("${DOCKER_IMAGE_NAME}").tag(tag)
+                script 
+                  sh docker tag "${DOCKER_IMAGE_NAME" devopseasylearning/my-python-image25:v.12
 
-                    // Push the image to DockerHub
-//docker.image(tag).push()
                 }
             }
         }
