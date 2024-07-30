@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image specifying the Dockerfile path
-                    def buildImage = docker.build("${DOCKER_IMAGE_NAME}", "-f smartedu/Dockerfile .")
+                    docker.build("${DOCKER_IMAGE_NAME}", "-f smartedu/Dockerfile .")
                 }
             }
         }
@@ -28,8 +28,8 @@ pipeline {
             steps {
                 script {
                     // Login to DockerHub
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKERHUB_CREDENTIALS_ID}") {
-                        // DockerHub login is handled by the withRegistry block
+                    withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS_ID}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD'
                     }
                 }
             }
@@ -37,9 +37,12 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                script 
-                  sh docker tag "${DOCKER_IMAGE_NAME" devopseasylearning/my-python-image25:v.12
+                script {
+                    // Tag the Docker image
+                    sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
 
+                    // Push the Docker image to DockerHub
+                    sh "docker push ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
                 }
             }
         }
