@@ -43,7 +43,7 @@ pipeline {
                     docker.image("${DOCKER_IMAGE_NAME}").tag(tag)
 
                     // Push the image to DockerHub
-                    docker.image(tag).push()
+//docker.image(tag).push()
                 }
             }
         }
